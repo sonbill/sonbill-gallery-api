@@ -58,10 +58,14 @@ class AuthController extends Controller
 
             $cookie = cookie('jwt', $token, 60 * 24);
 
-            return response()->json([
-                'access_token' => $token,
-                'type_token' => 'Bearer',
-            ])->withCookie($cookie);
+            return response()->json(
+                [
+                    'access_token' => $token,
+                    'type_token' => 'Bearer',
+                ],
+                Response::HTTP_OK
+
+            )->withCookie($cookie);
         };
     }
 
@@ -101,7 +105,7 @@ class AuthController extends Controller
             [
                 'message' => "Created Success"
             ],
-            Response::HTTP_UNAUTHORIZED
+            Response::HTTP_CREATED
         );
     }
     // LOGOUT
@@ -112,9 +116,9 @@ class AuthController extends Controller
 
         return response()->json(
             [
-                'message' => 'Logout',
+                'message' => 'Logout Success',
             ],
-            Response::HTTP_UNAUTHORIZED
+            Response::HTTP_OK
         )->withCookie($cookie);
     }
 }
