@@ -31,6 +31,8 @@ class AuthController extends Controller
                 404
             );
         }
+
+
         // CHECK LOGIN AFTER ENTER FULL FIELD
         $user = User::where(['email' => $request->email])->first();
 
@@ -49,7 +51,11 @@ class AuthController extends Controller
                 404
             );
         } else {
-            return $user;
+            $token = $user->createToken('AuthToken')->plainTextToken;
+            return response()->json([
+                'access_token' => $token,
+                'type_token' => 'Bearer',
+            ]);
         }
     }
 
