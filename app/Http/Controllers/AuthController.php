@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -59,6 +60,12 @@ class AuthController extends Controller
         }
     }
 
+    // GET USER AFTER LOGIN
+    public function user(Request $request)
+    {
+        return $request->user();
+    }
+
     // REGISTER
     public function register(Request $request)
     {
@@ -85,8 +92,24 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json([
-            'message' => "Created Success"
-        ]);
+        return response()->json(
+            [
+                'message' => "Created Success"
+            ],
+            200
+        );
+    }
+    // LOGOUT
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(
+            [
+                'message' => 'Logout',
+            ],
+            200
+        );
+        // return 'Logout!';
     }
 }
