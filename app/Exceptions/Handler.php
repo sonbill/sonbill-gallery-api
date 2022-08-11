@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\AuthenticationException;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class Handler extends ExceptionHandler
 {
@@ -49,7 +51,7 @@ class Handler extends ExceptionHandler
                     [
                         'message' => 'Error Login',
                     ],
-                    404
+                    Response::HTTP_UNAUTHORIZED
                 );
             }
         });

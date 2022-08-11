@@ -6,7 +6,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class AuthController extends Controller
 {
@@ -29,10 +32,9 @@ class AuthController extends Controller
                 [
                     'message' => $validate->errors(),
                 ],
-                404
+                Response::HTTP_UNAUTHORIZED
             );
         }
-
 
         // CHECK LOGIN AFTER ENTER FULL FIELD
         $user = User::where(['email' => $request->email])->first();
@@ -42,22 +44,25 @@ class AuthController extends Controller
                 [
                     'message' => 'User not exist!',
                 ],
-                404
+                Response::HTTP_UNAUTHORIZED
             );
         } elseif (!Hash::check($request->password, $user->password, [])) {
             return response()->json(
                 [
                     'message' => 'Wrong password!',
                 ],
-                404
+                Response::HTTP_UNAUTHORIZED
             );
         } else {
             $token = $user->createToken('AuthToken')->plainTextToken;
+
+            $cookie = cookie('jwt', $token, 60 * 24);
+
             return response()->json([
                 'access_token' => $token,
                 'type_token' => 'Bearer',
-            ]);
-        }
+            ])->withCookie($cookie);
+        };
     }
 
     // GET USER AFTER LOGIN
@@ -82,10 +87,10 @@ class AuthController extends Controller
                 [
                     'message' => $validate->errors(),
                 ],
-                404
+                Response::HTTP_UNAUTHORIZED
             );
         }
-
+        // CREATE USER
         User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -96,20 +101,20 @@ class AuthController extends Controller
             [
                 'message' => "Created Success"
             ],
-            200
+            Response::HTTP_UNAUTHORIZED
         );
     }
     // LOGOUT
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
+        $cookie = Cookie::forget('jwt');
 
         return response()->json(
             [
                 'message' => 'Logout',
             ],
-            200
-        );
-        // return 'Logout!';
+            Response::HTTP_UNAUTHORIZED
+        )->withCookie($cookie);
     }
 }
