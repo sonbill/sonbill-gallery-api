@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,9 +70,9 @@ class AuthController extends Controller
     }
 
     // GET USER AFTER LOGIN
-    public function user(Request $request)
+    public function user()
     {
-        return $request->user();
+        return Auth::user();
     }
 
     // REGISTER
@@ -82,7 +82,8 @@ class AuthController extends Controller
             'email.email' => 'Error Email',
         ];
         $validate = Validator::make($request->all(), [
-            'email' => 'email|required',
+            'email' => 'required|email',
+            'name' => 'required',
             'password' => 'required',
         ], $message);
 
@@ -94,7 +95,9 @@ class AuthController extends Controller
                 Response::HTTP_UNAUTHORIZED
             );
         }
+
         // CREATE USER
+
         User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -120,5 +123,29 @@ class AuthController extends Controller
             ],
             Response::HTTP_OK
         )->withCookie($cookie);
+    }
+
+    // CHANGE PASSWORD
+    public function updatePassword(Request $request)
+    {
+        // Validation
+
+        $request->validate([
+            'old_password' => ['required', 'current_password:sanctum'],
+            'new_password' => 'required|confirmed',
+        ]);
+
+        // Update the new password
+
+        Auth::user()->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return response()->json(
+            [
+                'message' => 'Update Success',
+            ],
+            Response::HTTP_OK
+        );
     }
 }
