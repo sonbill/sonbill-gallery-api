@@ -45,15 +45,15 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->renderable(function (AuthenticationException $e, $request) {
-            if ($request->is('api/*')) {
-                return response()->json(
-                    [
-                        'message' => 'Error Login',
-                    ],
-                    Response::HTTP_UNAUTHORIZED
-                );
-            }
-        });
+        // $this->renderable(function (AuthenticationException $e, $request) {
+        //     if ($request->is('api/*')) {
+        //         return response()->json(
+        //             [
+        //                 'message' => 'Error Login',
+        //             ],
+        //             Response::HTTP_UNAUTHORIZED
+        //         );
+        //     }
+        // });
     }
 }

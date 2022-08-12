@@ -17,15 +17,16 @@ class AuthController extends Controller
     public function login(Request $request)
     {
 
-        // CHECK VALIDATE LOGIN FIELD
-        $message = [
-            'email.email' => 'Error Email',
-        ];
+        // $message = [
+        //     'email.email' => 'Error Email',
+        // ];
 
         $validate = Validator::make($request->all(), [
             'email' => 'email|required',
             'password' => 'required',
-        ], $message);
+        ]);
+
+        // CHECK VALIDATE LOGIN FIELD
 
         if ($validate->fails()) {
             return response()->json(
@@ -34,39 +35,41 @@ class AuthController extends Controller
                 ],
                 Response::HTTP_UNAUTHORIZED
             );
-        }
-
-        // CHECK LOGIN AFTER ENTER FULL FIELD
-        $user = User::where(['email' => $request->email])->first();
-
-        if (!$user) {
-            return response()->json(
-                [
-                    'message' => 'User not exist!',
-                ],
-                Response::HTTP_UNAUTHORIZED
-            );
-        } elseif (!Hash::check($request->password, $user->password, [])) {
-            return response()->json(
-                [
-                    'message' => 'Wrong password!',
-                ],
-                Response::HTTP_UNAUTHORIZED
-            );
         } else {
-            $token = $user->createToken('AuthToken')->plainTextToken;
 
-            $cookie = cookie('jwt', $token, 60 * 24);
+            // CHECK LOGIN AFTER ENTER FULL FIELD
 
-            return response()->json(
-                [
-                    'access_token' => $token,
-                    'type_token' => 'Bearer',
-                ],
-                Response::HTTP_OK
+            $user = User::where(['email' => $request->email])->first();
+            if (!$user) {
+                return response()->json(
+                    [
+                        'message' => 'User not exist!',
+                    ],
+                    Response::HTTP_UNAUTHORIZED
+                );
+            } elseif (!Hash::check($request->password, $user->password, [])) {
+                return response()->json(
+                    [
+                        'message' => 'Wrong password!',
+                    ],
+                    Response::HTTP_UNAUTHORIZED
+                );
+            } else {
+                // CREATE TOKEN & COOKIE
+                $token = $user->createToken('AuthToken')->plainTextToken;
 
-            )->withCookie($cookie);
-        };
+                $cookie = cookie('jwt', $token, 60 * 24);
+
+                return response()->json(
+                    [
+                        'access_token' => $token,
+                        'type_token' => 'Bearer',
+                    ],
+                    Response::HTTP_OK
+
+                )->withCookie($cookie);
+            };
+        }
     }
 
     // GET USER AFTER LOGIN
@@ -78,38 +81,38 @@ class AuthController extends Controller
     // REGISTER
     public function register(Request $request)
     {
-        $message = [
-            'email.email' => 'Error Email',
-        ];
-        $validate = Validator::make($request->all(), [
-            'email' => 'required|email',
+        // $message = [
+        //     'email.email' => 'Error Email',
+        // ];
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:users',
             'name' => 'required',
             'password' => 'required',
-        ], $message);
-
-        if ($validate->fails()) {
-            return response()->json(
-                [
-                    'message' => $validate->errors(),
-                ],
-                Response::HTTP_UNAUTHORIZED
-            );
-        }
-
-        // CREATE USER
-
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(
-            [
-                'message' => "Created Success"
-            ],
-            Response::HTTP_CREATED
-        );
+        // CHECK VALIDATE
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'message' => $validator->errors(),
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        } else {
+            // CREATE USER
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+
+            return response()->json(
+                [
+                    'message' => "Created Success"
+                ],
+                Response::HTTP_CREATED
+            );
+        }
     }
     // LOGOUT
     public function logout(Request $request)
@@ -129,23 +132,33 @@ class AuthController extends Controller
     public function updatePassword(Request $request)
     {
         // Validation
-
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'old_password' => ['required', 'current_password:sanctum'],
             'new_password' => 'required|confirmed',
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors(),
+            ], Response::HTTP_BAD_REQUEST);
+        } else {
+            Auth::user()->update([
+                'password' => Hash::make($request->new_password)
+            ]);
+
+            return response()->json(
+                [
+                    'message' => 'Updated password successfully!',
+                ],
+                Response::HTTP_OK
+            );
+        }
+
+        // $request->validate([
+        //     'old_password' => ['required', 'current_password:sanctum'],
+        //     'new_password' => 'required|confirmed',
+        // ]);
+
         // Update the new password
-
-        Auth::user()->update([
-            'password' => Hash::make($request->new_password)
-        ]);
-
-        return response()->json(
-            [
-                'message' => 'Update Success',
-            ],
-            Response::HTTP_OK
-        );
     }
 }

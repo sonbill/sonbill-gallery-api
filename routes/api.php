@@ -3,6 +3,8 @@
 // use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\NewPasswordController;
 
 /*
@@ -21,8 +23,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [AuthController::class, 'user']);
     // LOGOUT
     Route::get('logout', [AuthController::class, 'logout']);
-    // 
+    // UPDATE PASSWORD
     Route::post('change-password', [AuthController::class, 'updatePassword']);
+    // CREATE CATEGORY
+    Route::post('create-category', [CategoryController::class, 'create']);
+    // CREATE IMAGE
+    Route::post('create-image', [ImageController::class, 'create']);
 });
 
 
