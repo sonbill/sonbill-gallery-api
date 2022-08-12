@@ -14,8 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('category', function (Blueprint $table) {
-            $table->id(); #1,2,3
-            $table->string('name');#2019 #2020 #2021
+            $table->id();
+            $table->string('title');
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
         });
     }

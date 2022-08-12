@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // UPDATE PASSWORD
     Route::post('change-password', [AuthController::class, 'updatePassword']);
     // CREATE CATEGORY
-    Route::post('create-category', [CategoryController::class, 'create']);
+    Route::post('store-category', [CategoryController::class, 'store']);
     // CREATE IMAGE
     Route::post('create-image', [ImageController::class, 'create']);
 });

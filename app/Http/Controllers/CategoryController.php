@@ -20,17 +20,18 @@ class CategoryController extends Controller
     {
         // VALIDATE
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'title' => 'required|unique:category',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Failed to add Category!'
+                'message' => $validator->errors(),
             ], Response::HTTP_BAD_REQUEST);
         } else {
             // ADD CATEGORY
             $category = new Category;
-            $category->name = $request->all();
+            $category->title = $request->input('title');
+            $category->parent_id = $request->input('parent_id');
             $category->save();
             return response()->json([
                 'message' => 'Category added successfully!'
