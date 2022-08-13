@@ -20,7 +20,10 @@ class CategoryController extends Controller
     {
         // VALIDATE
         $validator = Validator::make($request->all(), [
-            'title' => 'required|unique:category',
+            'title' => 'required',
+            'month' => 'required',
+            'year' => 'required',
+            'roll' => 'required|unique:category'
         ]);
 
         if ($validator->fails()) {
@@ -37,5 +40,15 @@ class CategoryController extends Controller
                 'message' => 'Category added successfully!'
             ], Response::HTTP_OK);
         }
+    }
+
+    //
+    public function destroy($id)
+    {
+        $category = Category::find($id);
+        $category->delete();
+        return response()->json([
+            'message' => 'Category deleted successfully!'
+        ], Response::HTTP_OK);
     }
 }
