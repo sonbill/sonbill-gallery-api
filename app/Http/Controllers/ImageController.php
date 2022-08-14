@@ -26,8 +26,7 @@ class ImageController extends Controller
 
     public function store(Request $request)
     {
-        $subCategory = Subcategory::findOrFail($request->subcategory_id);
-        $subCategory->images()->create([
+        Image::create([
             'subcategory_id' => $request->subcategory_id,
             'title' => $request->title,
         ]);

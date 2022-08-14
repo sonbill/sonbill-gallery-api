@@ -13,8 +13,7 @@ class SubcategoryController extends Controller
 {
     public function store(Request $request)
     {
-        $category = Category::findOrFail($request->category_id);
-        $category->subCategories()->create([
+        Subcategory::create([
             'category_id' => $request->category_id,
             'title' => $request->title,
             'slug' => Str::slug($request->title),
