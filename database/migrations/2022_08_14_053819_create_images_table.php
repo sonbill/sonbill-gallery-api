@@ -15,13 +15,8 @@ return new class extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('category');
-            $table->string('title'); #31
-            $table->string('image');
-            $table->string('description')->nullable();
-            $table->string('date'); #12/08/2022
-            $table->mediumInteger('roll'); #12
+            $table->string('title');
+            $table->foreignId('subcategory_id')->constrained('subcategories')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -33,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('image');
+        Schema::dropIfExists('images');
     }
 };

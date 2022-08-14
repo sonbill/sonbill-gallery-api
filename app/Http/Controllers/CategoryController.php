@@ -3,16 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 
 
 class CategoryController extends Controller
 {
-    public function create()
+    public function index()
     {
+        $categories = Category::all();
+        return $categories;
     }
 
 
@@ -20,10 +23,8 @@ class CategoryController extends Controller
     {
         // VALIDATE
         $validator = Validator::make($request->all(), [
-            'title' => 'required',
-            'month' => 'required',
-            'year' => 'required',
-            'roll' => 'required|unique:category'
+            'title' => 'required|unique:categories',
+            'slug' => 'unique:categories',
         ]);
 
         if ($validator->fails()) {
@@ -32,10 +33,10 @@ class CategoryController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         } else {
             // ADD CATEGORY
-            $category = new Category;
-            $category->title = $request->input('title');
-            $category->parent_id = $request->input('parent_id');
-            $category->save();
+            Category::create([
+                'title' => $request->title,
+                'slug' => Str::slug($request->title),
+            ]);
             return response()->json([
                 'message' => 'Category added successfully!'
             ], Response::HTTP_OK);
