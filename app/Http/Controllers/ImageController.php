@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Image;
+use App\Models\Category;
 use App\Models\Subcategory;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,13 +26,14 @@ class ImageController extends Controller
 
     public function store(Request $request)
     {
-        $subcategory = Subcategory::findOrFail($request->subcategory_id);
-        $subcategory->images()->create([
+        $subCategory = Subcategory::findOrFail($request->subcategory_id);
+        $subCategory->images()->create([
+            'subcategory_id' => $request->subcategory_id,
             'title' => $request->title,
         ]);
         return response()->json(
             [
-                'message' => 'Image added successfully!'
+                'message' => 'Images added successfully!'
             ],
             Response::HTTP_OK
         );
