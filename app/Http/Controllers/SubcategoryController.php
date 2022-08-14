@@ -7,6 +7,6 @@ use Illuminate\Http\Request;
 class SubcategoryController extends Controller
 {
     public function store(){
-        
+
     }
 }

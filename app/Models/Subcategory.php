@@ -26,6 +26,6 @@ class Subcategory extends Model
     }
     public function images()
     {
-        return $this->hasMany(Image::class);
+        return $this->hasMany(Image::class, 'subcategory_id', 'id');
     }
 }

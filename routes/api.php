@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // GET CATEGORY ID
     Route::get('get-category', [CategoryController::class, 'index']);
     // CREATE IMAGE
-    Route::post('create-image', [ImageController::class, 'create']);
+    Route::post('store-image', [ImageController::class, 'store']);
 });
 
 
