@@ -32,7 +32,7 @@ class ImageController extends Controller
             [
                 'message' => 'Image added successfully!'
             ],
-            Response::HTTP_BAD_REQUEST
+            Response::HTTP_OK
         );
     }
 }

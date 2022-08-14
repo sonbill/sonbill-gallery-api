@@ -3,9 +3,10 @@
 // use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NewPasswordController;
+use App\Http\Controllers\SubcategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('change-password', [AuthController::class, 'updatePassword']);
     // CREATE CATEGORY
     Route::post('store-category', [CategoryController::class, 'store']);
+    // SUBCATEGORY
+    Route::post('store-subcategory', [SubcategoryController::class, 'store']);
     // GET CATEGORY ID
     Route::get('get-category', [CategoryController::class, 'index']);
     // CREATE IMAGE

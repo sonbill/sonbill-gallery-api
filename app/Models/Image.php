@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Subcategory;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -17,8 +17,8 @@ class Image extends Model
         'title',
     ];
 
-    public function subcategories()
+    public function category()
     {
-        return $this->belongsTo(Subcategory::class);
+        return $this->belongsTo(Category::class);
     }
 }

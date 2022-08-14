@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Image;
 use App\Models\Subcategory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,8 +17,12 @@ class Category extends Model
         'slug',
     ];
 
-    public function subcategories()
+    public function subCategories()
     {
-        return $this->hasMany(Subcategory::class, 'category_id', 'id');
+        return $this->hasMany(Subcategory::class);
+    }
+    public function images()
+    {
+        return $this->hasMany(Image::class);
     }
 }
