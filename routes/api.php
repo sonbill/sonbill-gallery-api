@@ -33,9 +33,15 @@ Route::middleware('auth:sanctum')->group(function () {
     // GET CATEGORY ID
     Route::get('get-category', [CategoryController::class, 'index']);
     // CREATE IMAGE
-    Route::post('store-image', [ImageController::class, 'store']);
-    // EDIT IMAGE
+    Route::post('create-image', [ImageController::class, 'store']);
+    // GET IMAGES
+    Route::get('images', [ImageController::class, 'index']);
+    // EDIT IMAGE 
     Route::get('images/{image}/edit', [ImageController::class, 'edit']);
+    // UPDATE IMAGE 
+    Route::put('images/{image}/edit', [ImageController::class, 'update']);
+    // DELETE IMAGE
+    Route::delete('images/{image}', [ImageController::class, 'destroy']);
 });
 
 
