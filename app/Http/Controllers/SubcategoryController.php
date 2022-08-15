@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Subcategory;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -13,16 +13,30 @@ class SubcategoryController extends Controller
 {
     public function store(Request $request)
     {
-        Subcategory::create([
-            'category_id' => $request->category_id,
-            'title' => $request->title,
-            'slug' => Str::slug($request->title),
+        // VALIDATE
+
+        $validator = Validator::make($request->all(), [
+            'category_id' => 'required',
+            'title' => 'required|unique:subcategories',
         ]);
-        return response()->json(
-            [
-                'message' => 'SubCategory added successfully!'
-            ],
-            Response::HTTP_OK
-        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors(),
+            ], Response::HTTP_BAD_REQUEST);
+        } else {
+            //ADD SUB CATEGORY
+            Subcategory::create([
+                'category_id' => $request->category_id,
+                'title' => $request->title,
+                'slug' => Str::slug($request->title),
+            ]);
+            return response()->json(
+                [
+                    'message' => 'Sub-Category added successfully!'
+                ],
+                Response::HTTP_OK
+            );
+        }
     }
 }

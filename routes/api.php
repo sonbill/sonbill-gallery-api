@@ -34,6 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('get-category', [CategoryController::class, 'index']);
     // CREATE IMAGE
     Route::post('store-image', [ImageController::class, 'store']);
+    // EDIT IMAGE
+    Route::get('images/{image}/edit', [ImageController::class, 'edit']);
 });
 
 

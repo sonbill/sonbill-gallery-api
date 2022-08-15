@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Image;
-use App\Models\Category;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Subcategory;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -20,21 +20,35 @@ class ImageController extends Controller
 
     public function create()
     {
-        $subcategories = Subcategory::all();
-        return $subcategories;
+        // $subcategories = Subcategory::all();
+        // return $subcategories;
     }
 
     public function store(Request $request)
     {
-        Image::create([
-            'subcategory_id' => $request->subcategory_id,
-            'title' => $request->title,
+        // CHECK VALIDATE IMAGE
+        $validator = Validator::make($request->all(), [
+            'subcategory_id' => 'required',
+            'title' => 'required|unique:images',
         ]);
-        return response()->json(
-            [
-                'message' => 'Images added successfully!'
-            ],
-            Response::HTTP_OK
-        );
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors(),
+            ], Response::HTTP_BAD_REQUEST);
+        } else {
+            // ADD IMAGE
+            Image::create([
+                'subcategory_id' => $request->subcategory_id,
+                'title' => $request->title,
+                'slug' => Str::slug($request->title),
+
+            ]);
+            return response()->json(
+                [
+                    'message' => 'Images added successfully!'
+                ],
+                Response::HTTP_OK
+            );
+        }
     }
 }
