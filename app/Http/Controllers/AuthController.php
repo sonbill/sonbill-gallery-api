@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -55,10 +54,8 @@ class AuthController extends Controller
                     Response::HTTP_UNAUTHORIZED
                 );
             } else {
-                // CREATE TOKEN & COOKIE
+                // CREATE TOKEN
                 $token = $user->createToken('AuthToken')->plainTextToken;
-
-                $cookie = cookie('jwt', $token, 60 * 24);
 
                 return response()->json(
                     [
@@ -67,7 +64,7 @@ class AuthController extends Controller
                     ],
                     Response::HTTP_OK
 
-                )->withCookie($cookie);
+                );
             };
         }
     }
@@ -118,14 +115,13 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-        $cookie = Cookie::forget('jwt');
 
         return response()->json(
             [
                 'message' => 'Logout Success',
             ],
             Response::HTTP_OK
-        )->withCookie($cookie);
+        );
     }
 
     // CHANGE PASSWORD

@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // LOGIN
     Route::get('user', [AuthController::class, 'user']);
     // LOGOUT
-    Route::get('logout', [AuthController::class, 'logout']);
+    Route::post('logout', [AuthController::class, 'logout']);
     // UPDATE PASSWORD
     Route::post('change-password', [AuthController::class, 'updatePassword']);
     // CREATE CATEGORY
