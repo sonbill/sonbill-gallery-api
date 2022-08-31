@@ -124,6 +124,25 @@ class AuthController extends Controller
         );
     }
 
+    // REFRESH TOKENS
+    public function refreshToken(Request $request)
+    {
+        $accessToken = $request->user()->currentAccessToken();
+        if (
+            !$accessToken || ($this->expiration && $accessToken->created_at->lte(now()->subMinutes($this->expiration))) || !$this->hasValidProvider($accessToken->tokenable)
+        ) {
+            return;
+        }
+
+        $request->user()->tokens()->delete();
+
+        $newToken = $request->user->createToken('AuthToken')->plainTextToken;
+
+        return response()->json([
+            'access_token' => $newToken
+        ]);
+    }
+
     // CHANGE PASSWORD
     public function updatePassword(Request $request)
     {

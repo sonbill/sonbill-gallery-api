@@ -22,6 +22,8 @@ use App\Http\Controllers\SubcategoryController;
 Route::middleware('auth:sanctum')->group(function () {
     // LOGIN
     Route::get('user', [AuthController::class, 'user']);
+    // REFRESH TOKEN 
+    Route::post('refresh', [AuthController::class, 'refreshToken']);
     // LOGOUT
     Route::post('logout', [AuthController::class, 'logout']);
     // UPDATE PASSWORD
