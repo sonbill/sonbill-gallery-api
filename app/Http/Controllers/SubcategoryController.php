@@ -12,6 +12,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SubcategoryController extends Controller
 {
+    public function index()
+    {
+        $subCategories = Subcategory::all();
+        return $subCategories;
+    }
     public function store(Request $request)
     {
         // VALIDATE

@@ -30,10 +30,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('change-password', [AuthController::class, 'updatePassword']);
     // CREATE CATEGORY
     Route::post('store-category', [CategoryController::class, 'store']);
-    // SUBCATEGORY
-    Route::post('store-subcategory', [SubcategoryController::class, 'store']);
-    // GET CATEGORY ID
+    // GET CATEGORY
     Route::get('get-category', [CategoryController::class, 'index']);
+    // CREATE SUBCATEGORY
+    Route::post('store-subcategory', [SubcategoryController::class, 'store']);
+    // GET SUBCATEGORY
+    Route::get('get-subcategory', [SubcategoryController::class, 'index']);
     // CREATE IMAGE
     Route::post('create-image', [ImageController::class, 'store']);
     // GET IMAGES
