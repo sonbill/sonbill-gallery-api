@@ -32,10 +32,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('store-category', [CategoryController::class, 'store']);
     // GET CATEGORY
     Route::get('get-category', [CategoryController::class, 'index']);
+    // DELETE CATEGORY
+    Route::delete('categories/{category}', [CategoryController::class, 'destroy']);
     // CREATE SUBCATEGORY
     Route::post('store-subcategory', [SubcategoryController::class, 'store']);
     // GET SUBCATEGORY
     Route::get('get-subcategory', [SubcategoryController::class, 'index']);
+    // DELETE SUBCATEGORY
+    Route::delete('sub-categories/{sub-category}', [SubcategoryController::class, 'destroy']);
     // CREATE IMAGE
     Route::post('create-image', [ImageController::class, 'store']);
     // GET IMAGES

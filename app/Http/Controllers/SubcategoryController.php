@@ -45,4 +45,12 @@ class SubcategoryController extends Controller
             );
         }
     }
+    public function destroy($id)
+    {
+        $subCategory = Subcategory::find($id);
+        $subCategory->delete();
+        return response()->json([
+            'message' => 'Sub Category deleted successfully!'
+        ], Response::HTTP_OK);
+    }
 }
