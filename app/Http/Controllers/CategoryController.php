@@ -46,6 +46,7 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $input = $request->all();
+        
         $validator = Validator::make($input, [
             'title' => 'required',
         ]);
@@ -72,7 +73,6 @@ class CategoryController extends Controller
             ]);
         }
     }
-
 
     //DELETE CATEGORY
     public function destroy($id)

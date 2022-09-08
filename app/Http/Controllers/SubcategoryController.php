@@ -45,6 +45,42 @@ class SubcategoryController extends Controller
             );
         }
     }
+    // UPDATE
+    public function update(Request $request, $id)
+    {
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'title' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                // "message" => 'Validation Error.', $validator->errors(),
+                "message" => 'Fail',
+            ]);
+        }
+
+        $subCategory = Subcategory::find($id);
+
+        if ($subCategory) {
+            $subCategory->title = $input['title'];
+            $subCategory->slug = Str::slug($request->title);
+            $subCategory->update();
+
+            return response()->json([
+                "success" => true,
+                "message" => "Sub Category updated successfully.",
+                "data" => $subCategory
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                "success" => false,
+                "message" => "Category not found!",
+            ], Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    // DELETE
     public function destroy($id)
     {
         $subCategory = Subcategory::find($id);

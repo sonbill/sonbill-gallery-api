@@ -28,20 +28,25 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     // UPDATE PASSWORD
     Route::post('change-password', [AuthController::class, 'updatePassword']);
+
     // CREATE CATEGORY
     Route::post('store-category', [CategoryController::class, 'store']);
     // GET CATEGORY
     Route::get('get-category', [CategoryController::class, 'index']);
-    // UPDATE IMAGE 
-    Route::put('/categories/{category}/update', [CategoryController::class, 'update']);
+    // UPDATE CATEGORY 
+    Route::put('categories/{category}/update', [CategoryController::class, 'update']);
     // DELETE CATEGORY
     Route::delete('categories/{category}', [CategoryController::class, 'destroy']);
+
     // CREATE SUBCATEGORY
     Route::post('store-subcategory', [SubcategoryController::class, 'store']);
     // GET SUBCATEGORY
     Route::get('get-subcategory', [SubcategoryController::class, 'index']);
+    // UPDATE SUBCATEGORY 
+    Route::put('sub-categories/{sub-category}/update', [SubcategoryController::class, 'update']);
     // DELETE SUBCATEGORY
     Route::delete('sub-categories/{sub-category}', [SubcategoryController::class, 'destroy']);
+
     // CREATE IMAGE
     Route::post('create-image', [ImageController::class, 'store']);
     // GET IMAGES
@@ -49,7 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // EDIT IMAGE 
     Route::get('images/{image}/edit', [ImageController::class, 'edit']);
     // UPDATE IMAGE 
-    Route::put('/images/{image}/update', [ImageController::class, 'update']);
+    Route::put('images/{image}/update', [ImageController::class, 'update']);
     // DELETE IMAGE
     Route::delete('images/{image}', [ImageController::class, 'destroy']);
 });
