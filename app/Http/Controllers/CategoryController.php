@@ -42,8 +42,39 @@ class CategoryController extends Controller
             ], Response::HTTP_OK);
         }
     }
+    // UPDATE CATEGORY
+    public function update(Request $request, $id)
+    {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'title' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                "message" => 'Validation Error.', $validator->errors(),
+            ]);
+        }
 
-    //
+        $category = Category::find($id);
+        if ($category) {
+            $category->title = $input['title'];
+            $category->slug = Str::slug($request->title);
+            $category->update();
+            return response()->json([
+                "success" => true,
+                "message" => "Category updated successfully.",
+                "data" => $category
+            ]);
+        } else {
+            return response()->json([
+                "success" => false,
+                "message" => "Category not found!",
+            ]);
+        }
+    }
+
+
+    //DELETE CATEGORY
     public function destroy($id)
     {
         $category = Category::find($id);

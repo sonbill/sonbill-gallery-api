@@ -32,6 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('store-category', [CategoryController::class, 'store']);
     // GET CATEGORY
     Route::get('get-category', [CategoryController::class, 'index']);
+    // UPDATE IMAGE 
+    Route::put('/categories/{category}/update', [CategoryController::class, 'update']);
     // DELETE CATEGORY
     Route::delete('categories/{category}', [CategoryController::class, 'destroy']);
     // CREATE SUBCATEGORY
