@@ -43,9 +43,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // GET SUBCATEGORY
     Route::get('get-subcategory', [SubcategoryController::class, 'index']);
     // UPDATE SUBCATEGORY 
-    Route::put('sub-categories/{sub-category}/update', [SubcategoryController::class, 'update']);
+    Route::put('sub-categories/{subCategory}/update', [SubcategoryController::class, 'update']);
     // DELETE SUBCATEGORY
-    Route::delete('sub-categories/{sub-category}', [SubcategoryController::class, 'destroy']);
+    Route::delete('sub-categories/{subCategory}', [SubcategoryController::class, 'destroy']);
 
     // CREATE IMAGE
     Route::post('create-image', [ImageController::class, 'store']);

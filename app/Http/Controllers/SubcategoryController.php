@@ -79,7 +79,6 @@ class SubcategoryController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
     }
-
     // DELETE
     public function destroy($id)
     {
