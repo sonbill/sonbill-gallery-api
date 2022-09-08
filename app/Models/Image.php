@@ -15,6 +15,7 @@ class Image extends Model
     protected $fillable = [
         'subcategory_id',
         'slug',
+        'image_path',
         'title',
     ];
 

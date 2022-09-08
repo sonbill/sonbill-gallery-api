@@ -16,6 +16,10 @@ return new class extends Migration
         Schema::create('subcategories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('place');
+            $table->string('city');
+            $table->string('roll');
+            $table->string('description')->nullable();
             $table->string('slug');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->timestamps();

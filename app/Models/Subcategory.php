@@ -17,6 +17,10 @@ class Subcategory extends Model
         'category_id',
         'title',
         'slug',
+        'place',
+        'city',
+        'roll',
+        'description',
     ];
 
 

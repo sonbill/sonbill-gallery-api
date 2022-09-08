@@ -23,7 +23,11 @@ class SubcategoryController extends Controller
 
         $validator = Validator::make($request->all(), [
             'category_id' => 'required',
-            'title' => 'required|unique:subcategories',
+            'title' => 'required',
+            'place' => 'required',
+            'city' => 'required',
+            'roll' => 'required',
+            'description' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -35,6 +39,10 @@ class SubcategoryController extends Controller
             Subcategory::create([
                 'category_id' => $request->category_id,
                 'title' => $request->title,
+                'place' => $request->place,
+                'city' => $request->city,
+                'roll' => $request->roll,
+                'description' => $request->description,
                 'slug' => Str::slug($request->title),
             ]);
             return response()->json(
@@ -52,6 +60,10 @@ class SubcategoryController extends Controller
 
         $validator = Validator::make($input, [
             'title' => 'required',
+            'place' => 'required',
+            'city' => 'required',
+            'roll' => 'required',
+            'description' => 'nullable',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -64,6 +76,10 @@ class SubcategoryController extends Controller
 
         if ($subCategory) {
             $subCategory->title = $input['title'];
+            $subCategory->place = $input['place'];
+            $subCategory->city = $input['city'];
+            $subCategory->roll = $input['roll'];
+            $subCategory->description = $input['description'];
             $subCategory->slug = Str::slug($request->title);
             $subCategory->update();
 

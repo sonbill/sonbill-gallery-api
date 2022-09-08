@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('image_path');
             $table->string('slug');
             $table->foreignId('subcategory_id')->constrained('subcategories')->onDelete('cascade');
             $table->timestamps();

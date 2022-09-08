@@ -35,6 +35,7 @@ class ImageController extends Controller
         $validator = Validator::make($request->all(), [
             'subcategory_id' => 'required',
             'title' => 'required',
+            'image_path' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -45,6 +46,7 @@ class ImageController extends Controller
             Image::create([
                 'subcategory_id' => $request->subcategory_id,
                 'title' => $request->title,
+                'image_path' => $request->image_path,
                 'slug' => Str::slug($request->title),
             ]);
             return response()->json(
@@ -68,6 +70,8 @@ class ImageController extends Controller
         $input = $request->all();
         $validator = Validator::make($input, [
             'title' => 'required',
+            'image_path' => 'required',
+
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -79,6 +83,7 @@ class ImageController extends Controller
         if ($image) {
             $image->title = $input['title'];
             $image->slug = Str::slug($request->title);
+            $image->image_path = $input['image_path'];
             $image->update();
             return response()->json([
                 "success" => true,
