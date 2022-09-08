@@ -65,15 +65,51 @@ class ImageController extends Controller
 
     public function update(Request $request, $id)
     {
-        $image = Image::find($id);
-        $image->update($request->all());
+        // $image = Image::find($id);
+        // if ($image) {
+        //     $image->$request->all();
+        //     $image->save();
+        //     return $image;
+        //     // return response()->json(
+        //     //     [
+        //     //         'message' => 'Image updated successfully!',
+        //     //     ],
+        //     //     Response::HTTP_OK
+        //     // );
+        // } else {
+        //     return response()->json(
+        //         [
+        //             'message' => 'No image Found!',
+        //         ],
+        //         404
+        //     );
+        // }
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'title' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                "message" => 'Validation Error.', $validator->errors(),
+            ]);
+        }
 
-        return response()->json(
-            [
-                'message' => 'Image updated successfully!',
-            ],
-            Response::HTTP_OK
-        );
+        $image = Image::find($id);
+        if ($image) {
+            $image->title = $input['title'];
+            $image->slug = Str::slug($request->title);
+            $image->update();
+            return response()->json([
+                "success" => true,
+                "message" => "Image updated successfully.",
+                "data" => $image
+            ]);
+        } else {
+            return response()->json([
+                "success" => false,
+                "message" => "Image not found!",
+            ]);
+        }
     }
     public function destroy(Image $image)
     {

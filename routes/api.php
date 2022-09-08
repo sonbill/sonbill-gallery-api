@@ -47,7 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // EDIT IMAGE 
     Route::get('images/{image}/edit', [ImageController::class, 'edit']);
     // UPDATE IMAGE 
-    Route::put('images/{image}/edit', [ImageController::class, 'update']);
+    Route::put('/images/{image}/update', [ImageController::class, 'update']);
     // DELETE IMAGE
     Route::delete('images/{image}', [ImageController::class, 'destroy']);
 });
