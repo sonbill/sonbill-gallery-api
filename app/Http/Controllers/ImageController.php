@@ -6,6 +6,7 @@ use App\Models\Image;
 use App\Models\Subcategory;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -35,7 +36,7 @@ class ImageController extends Controller
         $validator = Validator::make($request->all(), [
             'subcategory_id' => 'required',
             'title' => 'required',
-            'image_path' => 'required',
+            'image_path' => 'required|image',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -43,12 +44,31 @@ class ImageController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         } else {
             // ADD IMAGE
-            Image::create([
-                'subcategory_id' => $request->subcategory_id,
-                'title' => $request->title,
-                'image_path' => $request->image_path,
-                'slug' => Str::slug($request->title),
-            ]);
+            // $image = Str::random(32) . "." . $request->image_path->getClientOriginalExtension();
+
+            $file = $request->hasFile('image_path');
+            if ($file) {
+                $newFile = $request->file('image_path');
+                $file_path = $newFile->store('images');
+
+                Image::create([
+                    'subcategory_id' => $request->subcategory_id,
+                    'title' => $request->title,
+                    'image_path' => $file_path,
+                    'slug' => Str::slug($request->title),
+                ]);
+            }
+
+            // Image::create([
+            //     'subcategory_id' => $request->subcategory_id,
+            //     'title' => $request->title,
+            //     'image_path' => $image,
+            //     'slug' => Str::slug($request->title),
+            // ]);
+
+            // SAVE IMG IN STORAGE FOLDER
+            // Storage::disk('public')->put($image, file_get_contents($request->image_path));
+
             return response()->json(
                 [
                     'message' => 'Images added successfully!'
