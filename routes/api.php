@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NewPasswordController;
 use App\Http\Controllers\SubcategoryController;
@@ -57,6 +58,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('images/{image}/update', [ImageController::class, 'update']);
     // DELETE IMAGE
     Route::delete('images/{image}', [ImageController::class, 'destroy']);
+
+    //GET ACCOUNT
+    Route::get('get-accounts', [AccountController::class, 'index']);
 });
 
 
