@@ -61,6 +61,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //GET ACCOUNT
     Route::get('get-accounts', [AccountController::class, 'index']);
+    // DELETE IMAGE
+    Route::delete('accounts/{account}', [AccountController::class, 'destroy']);
 });
 
 
