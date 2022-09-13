@@ -15,10 +15,12 @@ class AccountController extends Controller
         return $accounts;
     }
     //DELETE ACCOUNT
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $user = User::find($id);
         $user->delete();
+        $request->user()->currentAccessToken()->delete();
+
         return response()->json([
             'message' => 'Account deleted successfully!'
         ], Response::HTTP_OK);
