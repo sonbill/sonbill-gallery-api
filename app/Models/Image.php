@@ -16,6 +16,7 @@ class Image extends Model
         'subcategory_id',
         'slug',
         'image_path',
+        'size',
         'title',
     ];
 

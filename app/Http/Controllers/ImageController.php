@@ -19,6 +19,7 @@ class ImageController extends Controller
         return response()->json(
             [
                 'images' => $images,
+
             ],
             Response::HTTP_OK
         );
@@ -50,10 +51,10 @@ class ImageController extends Controller
             if ($file) {
                 $newFile = $request->file('image_path');
                 $file_path = $newFile->store('images');
-
                 Image::create([
                     'subcategory_id' => $request->subcategory_id,
                     'title' => $request->title,
+                    'size' =>   $request->file('image_path')->getSize(),
                     'image_path' => $file_path,
                     'slug' => Str::slug($request->title),
                 ]);
