@@ -16,13 +16,7 @@ class ImageController extends Controller
     public function index()
     {
         $images = Image::all();
-        return response()->json(
-            [
-                'images' => $images,
-
-            ],
-            Response::HTTP_OK
-        );
+        return $images;
     }
 
     public function create()
@@ -47,18 +41,23 @@ class ImageController extends Controller
             // ADD IMAGE
             // $image = Str::random(32) . "." . $request->image_path->getClientOriginalExtension();
 
-            $file = $request->hasFile('image_path');
-            if ($file) {
-                $newFile = $request->file('image_path');
-                $file_path = $newFile->store('images');
+            if ($request->hasFile('image_path')) {
+                $description_path = 'public/images';
+                $image = $request->file('image_path');
+                $image_name = $image->getClientOriginalName();
+                $path = $request->file('image_path')->storeAs($description_path, $image_name);
+
+
+                // $file_path = $newFile->store('images');
                 Image::create([
                     'subcategory_id' => $request->subcategory_id,
                     'title' => $request->title,
                     'size' =>   $request->file('image_path')->getSize(),
-                    'image_path' => $file_path,
+                    'image_path' => $image_name,
                     'slug' => Str::slug($request->title),
                 ]);
             }
+            // Storage::disk('public')->put($image, file_get_contents($request->image_path);
 
             // Image::create([
             //     'subcategory_id' => $request->subcategory_id,
@@ -68,7 +67,6 @@ class ImageController extends Controller
             // ]);
 
             // SAVE IMG IN STORAGE FOLDER
-            // Storage::disk('public')->put($image, file_get_contents($request->image_path));
 
             return response()->json(
                 [
