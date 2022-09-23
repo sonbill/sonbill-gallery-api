@@ -30,7 +30,8 @@ class AuthController extends Controller
         if ($validate->fails()) {
             return response()->json(
                 [
-                    'message' => $validate->errors(),
+                    'message' => $validate->errors()->first(),
+                    'errors' => $validate->errors(),
                 ],
                 Response::HTTP_UNAUTHORIZED
             );
