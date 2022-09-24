@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\File;
 
 
 class ImageController extends Controller
@@ -39,24 +40,31 @@ class ImageController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         } else {
             // ADD IMAGE
-            // $image = Str::random(32) . "." . $request->image_path->getClientOriginalExtension();
+
+            // RANDOM NAME
+            $randomStringName = Str::random(32) . "." . $request->image_path->getClientOriginalExtension();
 
             if ($request->hasFile('image_path')) {
                 $description_path = 'public/images';
                 $image = $request->file('image_path');
-                $image_name = $image->getClientOriginalName();
+                $image_name = $randomStringName;
                 $path = $request->file('image_path')->storeAs($description_path, $image_name);
+
+                // CONVERT FILE SIZE FROM BYTE TO MB
+                $file_size = $request->file('image_path')->getSize();
+                $fileSizeToMB = number_format($file_size / 1048576, 2);
 
 
                 // $file_path = $newFile->store('images');
                 Image::create([
                     'subcategory_id' => $request->subcategory_id,
                     'title' => $request->title,
-                    'size' =>   $request->file('image_path')->getSize(),
+                    'size' =>  $fileSizeToMB, //file('image_path')->getSize()
                     'image_path' => $image_name,
                     'slug' => Str::slug($request->title),
                 ]);
             }
+
             // Storage::disk('public')->put($image, file_get_contents($request->image_path);
 
             // Image::create([
