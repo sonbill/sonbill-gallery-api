@@ -79,9 +79,6 @@ class AuthController extends Controller
     // REGISTER
     public function register(Request $request)
     {
-        // $message = [
-        //     'email.email' => 'Error Email',
-        // ];
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:users',
             'name' => 'required',
@@ -92,9 +89,10 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json(
                 [
-                    'message' => $validator->errors(),
+                    'message' => $validator->errors()->first(),
+                    'errors' => $validator->errors(),
                 ],
-                Response::HTTP_BAD_REQUEST
+                Response::HTTP_UNAUTHORIZED
             );
         } else {
             // CREATE USER
