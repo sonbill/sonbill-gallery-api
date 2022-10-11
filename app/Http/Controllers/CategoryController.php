@@ -14,6 +14,12 @@ class CategoryController extends Controller
 {
     public function index()
     {
+        $categories = Category::paginate(5);
+        return $categories;
+    }
+
+    public function list()
+    {
         $categories = Category::all();
         return $categories;
     }
